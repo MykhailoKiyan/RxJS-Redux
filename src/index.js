@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
-import { scan } from 'rxjs/operators';
+import { scan, startWith } from 'rxjs/operators';
 
 const initialState = {
-  counter: 0
+  counter: 100
 };
 
 const pre = document.querySelector('pre');
@@ -20,6 +20,7 @@ function createStore(rootReducer) {
   const subj$ = new Subject();
 
   const store$ = subj$.pipe(
+    startWith({type: '__INIT__' }),
     scan(rootReducer, undefined)
   );
 
