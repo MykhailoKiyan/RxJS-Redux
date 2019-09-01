@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { scan, startWith } from 'rxjs/operators';
+import { scan, startWith, shareReplay } from 'rxjs/operators';
 
 const initialState = {
   counter: 100
@@ -21,7 +21,8 @@ function createStore(rootReducer) {
 
   const store$ = subj$.pipe(
     startWith({type: '__INIT__' }),
-    scan(rootReducer, undefined)
+    scan(rootReducer, undefined),
+    shareReplay(1)
   );
 
   store$.dispatch = action => subj$.next(action);
